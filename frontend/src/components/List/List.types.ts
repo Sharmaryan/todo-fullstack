@@ -1,6 +1,10 @@
-import { Todo } from "../TodoInput/TodoInput.types";
-
-export type ListProps = {
+export type Todo = {
+    id: string;
+    title: string;
+  };
+  
+  export type ListProps = {
     todos: Todo[];
     onDelete: (id: string) => void;
-};
+    onUpdate: (id: string, title: string) => void;
+  };
