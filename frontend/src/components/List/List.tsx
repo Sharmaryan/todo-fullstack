@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ListProps } from "./List.types";
 
-export const List = ({ todos, onDelete, onUpdate }: ListProps) => {
+export const  List = ({ todos, onDelete, onUpdate }: ListProps) => {
   const [editId, setEditId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
 
@@ -20,12 +20,12 @@ export const List = ({ todos, onDelete, onUpdate }: ListProps) => {
 
   return (
     <ul className="space-y-2 mt-4">
-      {todos.map((todo) => (
+      {todos?.map((todo) => (
         <li
-          key={todo.id}
+          key={todo._id}
           className="bg-white p-3 rounded-xl shadow flex items-center justify-between"
         >
-          {editId === todo.id ? (
+          {editId === todo._id ? (
             <>
               <input
                 className="flex-1 mr-2 border p-1 rounded"
@@ -51,13 +51,13 @@ export const List = ({ todos, onDelete, onUpdate }: ListProps) => {
               <div className="flex items-center gap-2">
                 <button
                   className="text-blue-500 hover:text-blue-700 cursor-pointer"
-                  onClick={() => startEditing(todo.id, todo.title)}
+                  onClick={() => startEditing(todo._id, todo.title)}
                 >
                   ✏️
                 </button>
                 <button
                   className="text-red-500 hover:text-red-700 cursor-pointer"
-                  onClick={() => onDelete(todo.id)}
+                  onClick={() => onDelete(todo._id)}
                 >
                   ✕
                 </button>
