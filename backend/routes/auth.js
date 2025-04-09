@@ -18,19 +18,21 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     const email = req.body.email
+    const password = req.body.password
     try {
-        const userDetail = await User.find({ email })
-        const user = userDetail[0]
+        const user = await User.findOne({ email }).select('+password')
+        if (!user || !(await user.comparePasswords(password))) {
+            return res.status(400).json({ error: 'Invalid credentials' });
+        }
         if (!user._id) {
             return res.status(400).json({ err: "User doesn't esist" })
         }
         const token = await jwt.sign({ userId: user._id, email: user.email }, process.env.SECRET_TOKEN)
-        res.status(200).json({ msg: 'User loggedin successfully', token })
+        return res.status(200).json({ msg: 'User loggedin successfully', token })
     }
     catch (err) {
-        res.status(400).json({ err })
+        return res.status(400).json({ err })
     }
-    res.send('User Logged in')
 })
 
 module.exports = router;
