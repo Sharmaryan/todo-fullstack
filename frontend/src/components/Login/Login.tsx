@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { AuthProps, AuthType } from "./Login.types";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import { TOKEN } from "../../utils/constants";
 
 export const Login = ({ componentType }: AuthProps) => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export const Login = ({ componentType }: AuthProps) => {
         }
       );
       const data = resp.data;
-      localStorage.setItem("token", data.token);
+      localStorage.setItem(TOKEN, data.token);
       navigate("/");
     } catch (err) {
       console.log(err);
