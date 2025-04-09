@@ -1,36 +1,33 @@
-const express = require('express')
+const express = require('express');
+const verifyToken = require('../middleware/verifyToken');
+const Todo = require('../models/Todo');
 const router = express.Router()
 
-let todos = [
-    { id: "1", title: "Learn React" },
-    { id: "2", title: "Build a Todo App" },
-    { id: "3", title: "Profit 🚀" },
-    { id: "4", title: "Deploy it online 🌐" },
-]
 
-router.get('/', (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
+    const todos = await Todo.find({user:req.user.userId})
     res.status(200).json(todos)
 });
 
-router.post('/add', (req, res) => {
-    const id = crypto.randomUUID()
+router.post('/add', verifyToken, async (req, res) => {
     const title = req.body.title
-    const newTodo = { id, title }
-    todos.push(newTodo)
+    const currentUser = req.user
+    const todos = await Todo.create({ title, user: currentUser.userId })
     res.status(200).json(todos)
 });
 
-router.delete('/:id', (req, res) => {
-    const id = req.params.id
-    todos = todos.filter((todo) => todo.id !== id)
+router.delete('/:id', verifyToken, async (req, res) => {
+    const _id = req.params.id
+    await Todo.findByIdAndDelete({ _id })
+    const todos = await Todo.find({})
     res.status(200).json(todos)
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', verifyToken, async (req, res) => {
     const id = req.params.id
     const title = req.body.title
-
-    todos = todos.map((todo) => todo.id === id ? { ...todo, title } : todo)
+    await Todo.findByIdAndUpdate(id, { title })
+    const todos = await Todo.find({})
     res.status(200).json(todos)
 });
 
