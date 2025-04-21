@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { TOKEN } from "../../utils/constants";
+import { logout } from "../../utils/auth";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -10,14 +10,11 @@ export const Navbar = () => {
     <nav className="bg-white shadow-md py-4 px-6 rounded-b-2xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold text-blue-600">MyTodoApp</h1>
-        {!isAuthPage &&(
+        {!isAuthPage && (
           <div className="space-x-4">
             <button
               className="text-gray-700 hover:text-blue-500 transition font-medium"
-              onClick={() => {
-                localStorage.removeItem(TOKEN);
-                navigate("/signin");
-              }}
+              onClick={() => logout(navigate)}
             >
               Logout
             </button>
