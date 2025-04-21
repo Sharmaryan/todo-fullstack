@@ -24,9 +24,6 @@ router.post('/signin', async (req, res) => {
         if (!user || !(await user.comparePasswords(password))) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-        if (!user._id) {
-            return res.status(400).json({ err: "User doesn't esist" })
-        }
         const token = await jwt.sign({ userId: user._id, email: user.email }, process.env.SECRET_TOKEN)
         return res.status(200).json({ msg: 'User loggedin successfully', token })
     }
