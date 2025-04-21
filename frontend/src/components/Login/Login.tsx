@@ -21,7 +21,7 @@ export const Login = ({ componentType }: AuthProps) => {
         }
       );
       const data = resp.data;
-      localStorage.setItem(TOKEN, data.token);
+      localStorage.setItem(TOKEN, data.accessToken);
       navigate("/");
     } catch (err) {
       console.log(err);
